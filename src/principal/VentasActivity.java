@@ -1,10 +1,19 @@
 
 package principal;
 
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.table.JTableHeader;
+
 public class VentasActivity extends javax.swing.JInternalFrame {
 
     public VentasActivity() {
         initComponents();
+        
+        tabla.getTableHeader().setFont(new Font("Liberation Sans" , Font.BOLD, 20));
+        
+        tabla.setShowGrid(true);
+        tabla.setGridColor(Color.RED);
     }
     
     @SuppressWarnings("unchecked")
@@ -28,7 +37,7 @@ public class VentasActivity extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jTextField5 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabla = new javax.swing.JTable();
 
         setClosable(true);
 
@@ -150,10 +159,10 @@ public class VentasActivity extends javax.swing.JInternalFrame {
                 .addGap(18, 18, 18))
         );
 
-        jTable1.setBackground(new java.awt.Color(0, 0, 0));
-        jTable1.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
-        jTable1.setForeground(new java.awt.Color(255, 255, 255));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabla.setBackground(new java.awt.Color(0, 0, 0));
+        tabla.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        tabla.setForeground(new java.awt.Color(255, 255, 255));
+        tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -161,7 +170,7 @@ public class VentasActivity extends javax.swing.JInternalFrame {
                 "Folio", "Fecha", "Hora", "Cliente", "N.P. Vendidos"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabla);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -212,11 +221,11 @@ public class VentasActivity extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

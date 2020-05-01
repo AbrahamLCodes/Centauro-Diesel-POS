@@ -8,22 +8,26 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
 import javax.swing.Timer;
 import javax.swing.UIManager;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.DesktopPaneUI;
 //Usuario, ventas, inventario, proveedores, clientes
 
 public class MainActivity extends javax.swing.JFrame {
 
     private Timer timer;
+    
     private static ClientesActivity clientesObjeto;
     private static InventarioActivity inventarioObjeto;
     private static ProveedoresActivity proveedoresObjeto;
     private static VentasActivity ventasObjeto;
+    
+    private static ClientesInternal clientesInternal;
+    private static InventarioInternal inventarioInternal;
+    private static ProveedoresInternal proveedoresInternal;
+    private static VentasInternal ventasInternal;
 
+   
     public MainActivity() {
         initComponents();
 
@@ -49,44 +53,9 @@ public class MainActivity extends javax.swing.JFrame {
 
         inicializarInternals();
         
-     
-
     }
 
-    public class cronometro implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            GregorianCalendar tiempo = new GregorianCalendar();
-            int hora, minutos, segundos, am_pm;
-            hora = tiempo.get(Calendar.HOUR);
-            minutos = tiempo.get(Calendar.MINUTE);
-            segundos = tiempo.get(Calendar.SECOND);
-            am_pm = tiempo.get(Calendar.AM_PM);
-
-            if (hora < 10) {
-                horal.setText("0" + String.valueOf(hora));
-            } else {
-                horal.setText(String.valueOf(hora));
-            }
-            if (minutos < 10) {
-                minl.setText("0" + String.valueOf(minutos));
-            } else {
-                minl.setText(String.valueOf(minutos));
-            }
-            if (segundos < 10) {
-                segl.setText("0" + String.valueOf(segundos));
-            } else {
-                segl.setText(String.valueOf(segundos));
-            }
-            if (am_pm == 0) {
-                ampmTextField.setText("AM");
-            } else {
-                ampmTextField.setText("PM");
-            }
-
-        }
-    }
+    
 
     private void inicializarInternals() {
         clientesObjeto = new ClientesActivity();
@@ -94,10 +63,22 @@ public class MainActivity extends javax.swing.JFrame {
         ventasObjeto = new VentasActivity();
         inventarioObjeto = new InventarioActivity();
         
+        clientesInternal = new ClientesInternal();
+        proveedoresInternal = new ProveedoresInternal();
+        ventasInternal = new VentasInternal();
+        inventarioInternal = new InventarioInternal();
+        
         desktopPane.add(clientesObjeto);
         desktopPane.add(proveedoresObjeto);
         desktopPane.add(ventasObjeto);
         desktopPane.add(inventarioObjeto);
+        
+        desktopPane.add(clientesInternal);
+        desktopPane.add(proveedoresInternal);
+        desktopPane.add(ventasInternal);
+        desktopPane.add(inventarioInternal);
+        
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -118,9 +99,6 @@ public class MainActivity extends javax.swing.JFrame {
         fechal = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
         probarMenu = new javax.swing.JMenu();
-        inventarioMenu = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         ventasMenu = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -130,6 +108,9 @@ public class MainActivity extends javax.swing.JFrame {
         proveedoresMenu = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem10 = new javax.swing.JMenuItem();
+        inventarioMenu = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         informacionMenu = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
@@ -219,7 +200,7 @@ public class MainActivity extends javax.swing.JFrame {
         desktopPaneLayout.setVerticalGroup(
             desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(desktopPaneLayout.createSequentialGroup()
-                .addContainerGap(644, Short.MAX_VALUE)
+                .addContainerGap(646, Short.MAX_VALUE)
                 .addGroup(desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ampmTextField)
                     .addComponent(segl)
@@ -240,23 +221,6 @@ public class MainActivity extends javax.swing.JFrame {
         probarMenu.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
         menuBar.add(probarMenu);
 
-        inventarioMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        inventarioMenu.setText("Inventario");
-        inventarioMenu.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-
-        jMenuItem5.setText("Abrir inventario");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
-            }
-        });
-        inventarioMenu.add(jMenuItem5);
-
-        jMenuItem6.setText("Buscar en inventario");
-        inventarioMenu.add(jMenuItem6);
-
-        menuBar.add(inventarioMenu);
-
         ventasMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         ventasMenu.setText("Ventas");
         ventasMenu.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
@@ -270,6 +234,11 @@ public class MainActivity extends javax.swing.JFrame {
         ventasMenu.add(jMenuItem3);
 
         jMenuItem4.setText("Buscar en ventas");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         ventasMenu.add(jMenuItem4);
 
         menuBar.add(ventasMenu);
@@ -287,6 +256,11 @@ public class MainActivity extends javax.swing.JFrame {
         clientesMenu.add(jMenuItem7);
 
         jMenuItem8.setText(" Buscar en clientes");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         clientesMenu.add(jMenuItem8);
 
         menuBar.add(clientesMenu);
@@ -304,9 +278,36 @@ public class MainActivity extends javax.swing.JFrame {
         proveedoresMenu.add(jMenuItem9);
 
         jMenuItem10.setText("Buscar en proveedores");
+        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem10ActionPerformed(evt);
+            }
+        });
         proveedoresMenu.add(jMenuItem10);
 
         menuBar.add(proveedoresMenu);
+
+        inventarioMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        inventarioMenu.setText("Inventario");
+        inventarioMenu.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
+
+        jMenuItem5.setText("Abrir inventario");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        inventarioMenu.add(jMenuItem5);
+
+        jMenuItem6.setText("Buscar en inventario");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        inventarioMenu.add(jMenuItem6);
+
+        menuBar.add(inventarioMenu);
 
         informacionMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         informacionMenu.setText("Información");
@@ -366,7 +367,12 @@ public class MainActivity extends javax.swing.JFrame {
         destruirInternal(proveedoresObjeto);
         destruirInternal(clientesObjeto);
         destruirInternal(inventarioObjeto);
-
+        
+        destruirInternal(clientesInternal);
+        destruirInternal(proveedoresInternal);
+        destruirInternal(ventasInternal);
+        destruirInternal(inventarioInternal);
+        
         abrirInternal(ventasObjeto);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
@@ -377,6 +383,11 @@ public class MainActivity extends javax.swing.JFrame {
         destruirInternal(ventasObjeto);
         destruirInternal(proveedoresObjeto);
         destruirInternal(clientesObjeto);
+        
+        destruirInternal(clientesInternal);
+        destruirInternal(proveedoresInternal);
+        destruirInternal(ventasInternal);
+        destruirInternal(inventarioInternal);
 
         abrirInternal(inventarioObjeto);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
@@ -387,6 +398,11 @@ public class MainActivity extends javax.swing.JFrame {
         destruirInternal(ventasObjeto);
         destruirInternal(proveedoresObjeto);
         destruirInternal(inventarioObjeto);
+        
+        destruirInternal(clientesInternal);
+        destruirInternal(proveedoresInternal);
+        destruirInternal(ventasInternal);
+        destruirInternal(inventarioInternal);
 
         abrirInternal(clientesObjeto);
     }//GEN-LAST:event_jMenuItem7ActionPerformed
@@ -397,6 +413,11 @@ public class MainActivity extends javax.swing.JFrame {
         destruirInternal(ventasObjeto);
         destruirInternal(inventarioObjeto);
         destruirInternal(clientesObjeto);
+        
+        destruirInternal(clientesInternal);
+        destruirInternal(proveedoresInternal);
+        destruirInternal(ventasInternal);
+        destruirInternal(inventarioInternal);
 
         abrirInternal(proveedoresObjeto);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
@@ -405,6 +426,79 @@ public class MainActivity extends javax.swing.JFrame {
         InfoActivity obj = new InfoActivity();
         abrirInternal(obj);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        
+        //Buscar Ventas
+        ventasInternal = new VentasInternal();
+        
+        destruirInternal(ventasObjeto);
+        destruirInternal(inventarioObjeto);
+        destruirInternal(clientesObjeto);
+        destruirInternal(proveedoresObjeto);
+        
+        destruirInternal(inventarioInternal);
+        destruirInternal(clientesInternal);
+        destruirInternal(proveedoresInternal);
+        
+        abrirInternal(ventasInternal);
+        
+        
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        
+        //Buscar Clientes
+        clientesInternal = new ClientesInternal();
+        
+        destruirInternal(ventasObjeto);
+        destruirInternal(inventarioObjeto);
+        destruirInternal(clientesObjeto);
+        destruirInternal(proveedoresObjeto);
+        
+        destruirInternal(inventarioInternal);
+        destruirInternal(ventasInternal);
+        destruirInternal(proveedoresInternal);
+        
+        abrirInternal(clientesInternal);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        // Buscar Proveedores
+        
+        proveedoresInternal = new ProveedoresInternal();
+        
+        destruirInternal(ventasObjeto);
+        destruirInternal(inventarioObjeto);
+        destruirInternal(clientesObjeto);
+        destruirInternal(proveedoresObjeto);
+        
+        destruirInternal(inventarioInternal);
+        destruirInternal(clientesInternal);
+        destruirInternal(ventasInternal);
+        
+        abrirInternal(proveedoresInternal);
+        
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // Buscar Inventario
+        
+        inventarioInternal = new InventarioInternal();
+        
+        destruirInternal(ventasObjeto);
+        destruirInternal(inventarioObjeto);
+        destruirInternal(clientesObjeto);
+        destruirInternal(proveedoresObjeto);
+        
+        destruirInternal(proveedoresInternal);
+        destruirInternal(clientesInternal);
+        destruirInternal(ventasInternal);
+        
+        abrirInternal(inventarioInternal);
+        
+        
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     public static void main(String args[]) {
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -439,6 +533,41 @@ public class MainActivity extends javax.swing.JFrame {
     private void destruirInternal(JInternalFrame interno) {
         interno.toBack();
         interno.setVisible(false);
+    }
+    
+    public class cronometro implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            GregorianCalendar tiempo = new GregorianCalendar();
+            int hora, minutos, segundos, am_pm;
+            hora = tiempo.get(Calendar.HOUR);
+            minutos = tiempo.get(Calendar.MINUTE);
+            segundos = tiempo.get(Calendar.SECOND);
+            am_pm = tiempo.get(Calendar.AM_PM);
+
+            if (hora < 10) {
+                horal.setText("0" + String.valueOf(hora));
+            } else {
+                horal.setText(String.valueOf(hora));
+            }
+            if (minutos < 10) {
+                minl.setText("0" + String.valueOf(minutos));
+            } else {
+                minl.setText(String.valueOf(minutos));
+            }
+            if (segundos < 10) {
+                segl.setText("0" + String.valueOf(segundos));
+            } else {
+                segl.setText(String.valueOf(segundos));
+            }
+            if (am_pm == 0) {
+                ampmTextField.setText("AM");
+            } else {
+                ampmTextField.setText("PM");
+            }
+
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

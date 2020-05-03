@@ -1,5 +1,6 @@
 package principal;
 
+import Controlador.Conexion;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,11 +12,15 @@ import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import java.sql.Connection;
 //Usuario, ventas, inventario, proveedores, clientes
 
 public class MainActivity extends javax.swing.JFrame {
 
     private Timer timer;
+    
+    private Connection con;
+    Conexion conexion;
     
     private static ClientesActivity clientesObjeto;
     private static InventarioActivity inventarioObjeto;
@@ -30,7 +35,11 @@ public class MainActivity extends javax.swing.JFrame {
    
     public MainActivity() {
         initComponents();
-
+        
+        conexion = new Conexion();
+        conexion.CrearBD();
+        con = conexion.AccederBD();
+        
         setLocationRelativeTo(null);
         setTitle("Centauro Diesel POS");
         setSize(1200, 720);

@@ -66,7 +66,6 @@ public class Conexion {
                         tClientes.execute();
                         tClientes.close();
                         mensaje = mensaje+"\nTabla de clientes ha sido creada correctamente";
-
                     }
 
                     if (!isTableExist("VENTAS")) {
@@ -136,12 +135,21 @@ public class Conexion {
         return conn;
     }
 
-    public void cerracon() {
+   
+    
+    public Connection getConnection(){
         try {
-            conn.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            //obtenemos el driver de para mysql
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            //obtenemos la conexión
+            conn = DriverManager.getConnection("jdbc:derby:.\\DB\\CENTAUROPOS.DB");
+            
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return conn;
     }
 
 }

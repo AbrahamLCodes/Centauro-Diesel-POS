@@ -46,6 +46,7 @@ public class MainActivity extends javax.swing.JFrame {
         setResizable(false);
 
         Calendar cal = Calendar.getInstance();
+        
         String fecha = cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MARCH) + 1) + "/" + cal.get(Calendar.YEAR);
         this.fechal.setText(fecha);
 

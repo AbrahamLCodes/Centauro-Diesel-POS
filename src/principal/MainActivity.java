@@ -19,6 +19,7 @@ import java.sql.Connection;
 public class MainActivity extends javax.swing.JFrame {
 
     private Timer timer;
+    private static String fecha;
 
     private Connection con;
     Conexion conexion;
@@ -48,7 +49,7 @@ public class MainActivity extends javax.swing.JFrame {
 
         Calendar cal = Calendar.getInstance();
 
-        String fecha = cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MARCH) + 1) + "/" + cal.get(Calendar.YEAR);
+         fecha = cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MARCH) + 1) + "/" + cal.get(Calendar.YEAR);
         this.fechal.setText(fecha);
 
         ventasMenu.setBorderPainted(true);
@@ -577,6 +578,11 @@ public class MainActivity extends javax.swing.JFrame {
 
         }
     }
+
+    public static String getFecha() {
+        return fecha;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ampmTextField;

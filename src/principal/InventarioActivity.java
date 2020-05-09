@@ -9,9 +9,12 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
 
     Operaciones operaciones;
     String[] titulos;
+    private int cantidad;
 
     public InventarioActivity() {
         initComponents();
+        
+        fechaText.setText(MainActivity.getFecha());
 
         tabla.getTableHeader().setFont(new Font("Liberation Sans", Font.BOLD, 20));
 
@@ -30,18 +33,16 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         guardar.setEnabled(false);
         editar.setEnabled(false);
         eliminar.setEnabled(false);
-        
+
         cantidadText.setEnabled(false);
 
     }
 
     private void habilitar() {
         codigoText.setEnabled(true);
-        fechaText.setEnabled(true);
         nombreText.setEnabled(true);
         proveedorText.setEnabled(true);
         anadirText.setEnabled(true);
-        quitarText.setEnabled(true);
 
     }
 
@@ -58,7 +59,7 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
 
     private void limpiar() {
         codigoText.setText("");
-        fechaText.setText("");
+        fechaText.setText(MainActivity.getFecha());
         cantidadText.setText("0");
         nombreText.setText("");
         proveedorText.setText("");
@@ -103,9 +104,19 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
 
         editar.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
         editar.setText("Actualizar");
+        editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editarActionPerformed(evt);
+            }
+        });
 
         eliminar.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
         eliminar.setText("Eliminar");
+        eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarActionPerformed(evt);
+            }
+        });
 
         guardar.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
         guardar.setText("Guardar");
@@ -162,11 +173,21 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         jLabel6.setText("Introduce la cantidad a añadir");
 
         anadirText.setText("0");
+        anadirText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                anadirTextKeyPressed(evt);
+            }
+        });
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Introduce la cantidad a quitar");
 
         quitarText.setText("0");
+        quitarText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                quitarTextKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -338,6 +359,7 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         operaciones.readDatos(tabla, "INVENTARIO", 5);
         anadirText.setText("0");
         quitarText.setText("0");
+        quitarText.setEnabled(false);
     }//GEN-LAST:event_nuevoActionPerformed
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
@@ -357,6 +379,10 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
             guardar.setEnabled(false);
             editar.setEnabled(true);
             eliminar.setEnabled(true);
+            
+            anadirText.setText("0");
+            quitarText.setText("0");
+            quitarText.setEnabled(true);
 
             habilitar();
 
@@ -368,25 +394,73 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tablaMouseClicked
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
-        if(!isTextsEmpty()){
-            operaciones.insertIntoInventario(titulos);
-            String [] textos = new String []{codigoText.getText(), fechaText.getText()
-            ,cantidadText.getText(), nombreText.getText(),proveedorText.getText()};
-            
+        if (!isTextsEmpty()) {
+            String[] textos = new String[]{codigoText.getText(), fechaText.getText(),
+                 String.valueOf(cantidadTotal()), nombreText.getText(), proveedorText.getText()};
+
             operaciones.createDatos("INVENTARIO", textos);
-            
+
             operaciones.vaciarTabla(tabla, titulos);
             operaciones.readDatos(tabla, "INVENTARIO", 5);
-            
+
             nuevo.setEnabled(true);
             guardar.setEnabled(false);
             editar.setEnabled(false);
             eliminar.setEnabled(false);
             limpiar();
             desabilitar();
- 
+
         }
     }//GEN-LAST:event_guardarActionPerformed
+
+    private void anadirTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_anadirTextKeyPressed
+        quitarText.setText("0");
+    }//GEN-LAST:event_anadirTextKeyPressed
+
+    private void quitarTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_quitarTextKeyPressed
+        anadirText.setText("0");
+    }//GEN-LAST:event_quitarTextKeyPressed
+
+    private void editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editarActionPerformed
+        int fila = tabla.getSelectedRow();
+        String[] textos = new String[]{codigoText.getText(), fechaText.getText(),
+             String.valueOf(cantidadTotal()), nombreText.getText(), proveedorText.getText()};
+        
+        operaciones.updateFromInventario(textos, tabla.getValueAt(fila, 0).toString());
+        operaciones.vaciarTabla(tabla, titulos);
+        limpiar();
+        desabilitar();
+        operaciones.readDatos(tabla, "INVENTARIO", 5);
+        editar.setEnabled(false);
+        guardar.setEnabled(false);
+        eliminar.setEnabled(false);
+        nuevo.setEnabled(false);
+       
+    }//GEN-LAST:event_editarActionPerformed
+
+    private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
+        
+        int fila = tabla.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UN REGISTRO");
+        } else {
+            int opc = JOptionPane.showConfirmDialog(this,
+                    "¿ESTA SEGURO QUE DESEA ELIMINAR ESTE REGISTRO?",
+                    "Pregunta", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (opc == JOptionPane.YES_OPTION) {
+                operaciones.deleteFromInventario(codigoText.getText(), proveedorText.getText());
+                limpiar();
+                operaciones.vaciarTabla(tabla, titulos);
+                operaciones.readDatos(tabla, "INVENTARIO", 5);
+                nuevo.setEnabled(true);
+                guardar.setEnabled(false);
+                editar.setEnabled(false);
+                eliminar.setEnabled(false);
+                desabilitar();
+            }
+        }
+    }//GEN-LAST:event_eliminarActionPerformed
 
     private boolean isTextsEmpty() {
         if (codigoText.getText().isEmpty()) {
@@ -404,6 +478,12 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         } else {
             return false;
         }
+    }
+
+    private int cantidadTotal() {
+        cantidad = Integer.parseInt(cantidadText.getText());
+        return cantidad + Integer.parseInt(anadirText.getText())
+                - Integer.parseInt(quitarText.getText());
     }
 
 

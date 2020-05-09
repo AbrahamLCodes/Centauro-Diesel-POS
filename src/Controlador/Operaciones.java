@@ -99,44 +99,44 @@ public class Operaciones {
         }
 
     }
-    
-    private void changeDataBase(){
-        try{
+
+    private void changeDataBase() {
+        try {
             Connection con = null;
             Conexion conect = new Conexion();
             con = conect.getConnection();
             Statement st = con.createStatement();
-            
+
             String sql = "ALTER TABLE PROVEEDORES DROP APELLIDO";
-            
+
             PreparedStatement pst = con.prepareStatement(sql);
             int n = pst.executeUpdate();
-            
-            if(n > 0){
+
+            if (n > 0) {
                 System.out.println("YA CHINGASTE MIJO");
             }
-        }catch(SQLException ex){
-            System.out.println("NAAAA YA VALIO VRG:  "+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("NAAAA YA VALIO VRG:  " + ex.getMessage());
         }
     }
-    
-    public void addNProductos(){
-        try{
+
+    public void addNProductos() {
+        try {
             Connection con = null;
             Conexion conect = new Conexion();
             con = conect.getConnection();
             Statement st = con.createStatement();
-            
+
             String sql = "ALTER TABLE PROVEEDORES ADD NPRODUCTOS INT NOT NULL DEFAULT 0";
-            
+
             PreparedStatement pst = con.prepareStatement(sql);
             int n = pst.executeUpdate();
-            
-            if(n > 0){
+
+            if (n > 0) {
                 System.out.println("YA CHINGASTE MIJO");
             }
-        }catch(SQLException ex){
-            System.out.println("NAAAA YA VALIO VRG:  "+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("NAAAA YA VALIO VRG:  " + ex.getMessage());
         }
     }
 
@@ -227,8 +227,8 @@ public class Operaciones {
 
     }
 
-    private void insertIntoProveedores(String [] textos) {
-        
+    private void insertIntoProveedores(String[] textos) {
+
         try {
             Connection con = null;
             Conexion conect = new Conexion();
@@ -252,7 +252,7 @@ public class Operaciones {
             }
 
         } catch (SQLException ex) {
-           JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR DATOS: "+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR DATOS: " + ex.getMessage());
         }
 
     }
@@ -301,7 +301,7 @@ public class Operaciones {
         }
     }
 
-    public void insertIntoInventario(String[] textos) {
+    private void insertIntoInventario(String[] textos) {
         try {
             Connection con = null;
             Conexion conect = new Conexion();
@@ -314,27 +314,112 @@ public class Operaciones {
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, textos[0]);
             pst.setString(2, textos[1]);
-            pst.setInt(3, 0);
+            pst.setInt(3, Integer.parseInt(textos[2]));
             pst.setString(4, textos[3]);
             pst.setString(5, textos[4]);
 
             int n = pst.executeUpdate();
 
             if (n > 0) {
-                JOptionPane.showMessageDialog(null, "DATOS GUARDADOS CORRECTAMENTE");
+                aumentarProveedor(textos[4]);
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "ERROR AL GUARDAR DATOS: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "NO SE GUARDARON LOS DATOS: " + ex.getMessage());
+            
         }
     }
 
-    private void updateFromInventario(String[] textos, String codigo) {
+    private void aumentarProveedor(String celular) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            Statement st = con.createStatement();
+            
+            String sql = "UPDATE PROVEEDORES SET NPRODUCTOS = NPRODUCTOS + 1 WHERE CELULAR = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, celular);
+            int n = pst.executeUpdate();
+            if(n > 0){
+                JOptionPane.showMessageDialog(null, "DATOS GUARDADOS CORRECTAMENTE\n"
+                        + "SE HA AGREGADO UN PRODUCTO AL PROVEEDOR "+celular);
+            }
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "LOS DATOS NO SE GUARDARON\n"
+                    + "ES POSIBLE QUE HALLA ESCRITO MAL EL PROVEEDOR:\n"+ex.getMessage());
+        }
+    }
+
+    public void updateFromInventario(String[] textos, String codigo) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            Statement st = con.createStatement();
+
+            String sql = "UPDATE INVENTARIO SET CODIGO = ?, FECHA = ?, CANTIDAD = ?, "
+                    + "NOMBRE = ?, PROVEEDOR = ? WHERE CODIGO = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, textos[0]);
+            pst.setString(2, textos[1]);
+            pst.setInt(3, Integer.parseInt(textos[2]));
+            pst.setString(4, textos[3]);
+            pst.setString(5, textos[4]);
+            pst.setString(6, codigo);
+
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "DATOS ACTUALIZADOS CORRECTAMENTE");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR DATOS: " + ex.getMessage());
+        }
 
     }
 
-    private void deleteFromInventario(String codigo) {
+    public void deleteFromInventario(String codigo, String celular) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            String sql = "DELETE FROM INVENTARIO WHERE CODIGO = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, codigo);
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                quitarFromProveedores(celular);
+            }
 
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "DATOS NO ELIMINADOS CORRECTAMENTE: " + ex.getMessage());
+        }
+        
+        
+    }
+    
+    private void quitarFromProveedores(String celular){
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            Statement st = con.createStatement();
+            
+            String sql = "UPDATE PROVEEDORES SET NPRODUCTOS = NPRODUCTOS - 1 WHERE CELULAR = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, celular);
+            int n = pst.executeUpdate();
+            if(n > 0){
+                JOptionPane.showMessageDialog(null, "DATOS ELIMINADOS CORRECTAMENTE\n"
+                        + "SE HA ELIMINADO UN PRODUCTO AL PROVEEDOR "+celular);
+            }
+            
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "LOS DATOS NO SE ELIMINARON\n"
+                    + "ES POSIBLE QUE HALLA ESCRITO EL PROVEEDOR MAL:\n "+ex.getMessage());
+        }
     }
 
 }

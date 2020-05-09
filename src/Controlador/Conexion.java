@@ -47,7 +47,7 @@ public class Conexion {
                         + "CELULAR VARCHAR (10) PRIMARY KEY,"
                         + "CORREO VARCHAR (30),"
                         + "NOMBRE VARCHAR (30),"
-                        + "APELLIDO VARCHAR (30)"
+                        + "NPRODUCTOS INT NOT NULL DEFAULT 0,"
                         + ")";
 
                 String createTableInventario = "CREATE TABLE INVENTARIO("

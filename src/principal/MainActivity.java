@@ -1,6 +1,7 @@
 package principal;
 
 import Controlador.Conexion;
+import Controlador.Operaciones;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,35 +19,35 @@ import java.sql.Connection;
 public class MainActivity extends javax.swing.JFrame {
 
     private Timer timer;
-    
+
     private Connection con;
     Conexion conexion;
-    
+
     private static ClientesActivity clientesObjeto;
     private static InventarioActivity inventarioObjeto;
     private static ProveedoresActivity proveedoresObjeto;
     private static VentasActivity ventasObjeto;
-    
+
     private static ClientesInternal clientesInternal;
     private static InventarioInternal inventarioInternal;
     private static ProveedoresInternal proveedoresInternal;
     private static VentasInternal ventasInternal;
 
-   
     public MainActivity() {
         initComponents();
-        
+
         conexion = new Conexion();
         conexion.CrearBD();
         con = conexion.AccederBD();
-        
+
+
         setLocationRelativeTo(null);
         setTitle("Centauro Diesel POS");
         setSize(1200, 720);
         setResizable(false);
 
         Calendar cal = Calendar.getInstance();
-        
+
         String fecha = cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MARCH) + 1) + "/" + cal.get(Calendar.YEAR);
         this.fechal.setText(fecha);
 
@@ -62,33 +63,30 @@ public class MainActivity extends javax.swing.JFrame {
         menuBar.setBackground(Color.yellow);
 
         inicializarInternals();
-        
-    }
 
-    
+    }
 
     private void inicializarInternals() {
         clientesObjeto = new ClientesActivity();
         proveedoresObjeto = new ProveedoresActivity();
         ventasObjeto = new VentasActivity();
         inventarioObjeto = new InventarioActivity();
-        
+
         clientesInternal = new ClientesInternal();
         proveedoresInternal = new ProveedoresInternal();
         ventasInternal = new VentasInternal();
         inventarioInternal = new InventarioInternal();
-        
+
         desktopPane.add(clientesObjeto);
         desktopPane.add(proveedoresObjeto);
         desktopPane.add(ventasObjeto);
         desktopPane.add(inventarioObjeto);
-        
+
         desktopPane.add(clientesInternal);
         desktopPane.add(proveedoresInternal);
         desktopPane.add(ventasInternal);
         desktopPane.add(inventarioInternal);
-        
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -373,27 +371,27 @@ public class MainActivity extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         ventasObjeto = new VentasActivity();
-        
+
         destruirInternal(proveedoresObjeto);
         destruirInternal(clientesObjeto);
         destruirInternal(inventarioObjeto);
-        
+
         destruirInternal(clientesInternal);
         destruirInternal(proveedoresInternal);
         destruirInternal(ventasInternal);
         destruirInternal(inventarioInternal);
-        
+
         abrirInternal(ventasObjeto);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         inventarioObjeto = new InventarioActivity();
-        
+
         destruirInternal(ventasObjeto);
         destruirInternal(proveedoresObjeto);
         destruirInternal(clientesObjeto);
-        
+
         destruirInternal(clientesInternal);
         destruirInternal(proveedoresInternal);
         destruirInternal(ventasInternal);
@@ -403,12 +401,12 @@ public class MainActivity extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-       clientesObjeto = new ClientesActivity();
-        
+        clientesObjeto = new ClientesActivity();
+
         destruirInternal(ventasObjeto);
         destruirInternal(proveedoresObjeto);
         destruirInternal(inventarioObjeto);
-        
+
         destruirInternal(clientesInternal);
         destruirInternal(proveedoresInternal);
         destruirInternal(ventasInternal);
@@ -419,11 +417,11 @@ public class MainActivity extends javax.swing.JFrame {
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         proveedoresObjeto = new ProveedoresActivity();
-        
+
         destruirInternal(ventasObjeto);
         destruirInternal(inventarioObjeto);
         destruirInternal(clientesObjeto);
-        
+
         destruirInternal(clientesInternal);
         destruirInternal(proveedoresInternal);
         destruirInternal(ventasInternal);
@@ -438,76 +436,76 @@ public class MainActivity extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        
+
         //Buscar Ventas
         ventasInternal = new VentasInternal();
-        
+
         destruirInternal(ventasObjeto);
         destruirInternal(inventarioObjeto);
         destruirInternal(clientesObjeto);
         destruirInternal(proveedoresObjeto);
-        
+
         destruirInternal(inventarioInternal);
         destruirInternal(clientesInternal);
         destruirInternal(proveedoresInternal);
-        
+
         abrirInternal(ventasInternal);
-        
-        
+
+
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        
+
         //Buscar Clientes
         clientesInternal = new ClientesInternal();
-        
+
         destruirInternal(ventasObjeto);
         destruirInternal(inventarioObjeto);
         destruirInternal(clientesObjeto);
         destruirInternal(proveedoresObjeto);
-        
+
         destruirInternal(inventarioInternal);
         destruirInternal(ventasInternal);
         destruirInternal(proveedoresInternal);
-        
+
         abrirInternal(clientesInternal);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
         // Buscar Proveedores
-        
+
         proveedoresInternal = new ProveedoresInternal();
-        
+
         destruirInternal(ventasObjeto);
         destruirInternal(inventarioObjeto);
         destruirInternal(clientesObjeto);
         destruirInternal(proveedoresObjeto);
-        
+
         destruirInternal(inventarioInternal);
         destruirInternal(clientesInternal);
         destruirInternal(ventasInternal);
-        
+
         abrirInternal(proveedoresInternal);
-        
+
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
         // Buscar Inventario
-        
+
         inventarioInternal = new InventarioInternal();
-        
+
         destruirInternal(ventasObjeto);
         destruirInternal(inventarioObjeto);
         destruirInternal(clientesObjeto);
         destruirInternal(proveedoresObjeto);
-        
+
         destruirInternal(proveedoresInternal);
         destruirInternal(clientesInternal);
         destruirInternal(ventasInternal);
-        
+
         abrirInternal(inventarioInternal);
-        
-        
+
+
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     public static void main(String args[]) {
@@ -544,7 +542,7 @@ public class MainActivity extends javax.swing.JFrame {
         interno.toBack();
         interno.setVisible(false);
     }
-    
+
     public class cronometro implements ActionListener {
 
         @Override

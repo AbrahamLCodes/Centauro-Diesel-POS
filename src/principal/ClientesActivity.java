@@ -23,6 +23,8 @@ public class ClientesActivity extends javax.swing.JInternalFrame {
         desabilitar();
         operaciones.vaciarTabla(tabla, titulos);
         operaciones.readDatos(tabla, "CLIENTES", 5);
+        
+        
 
         nuevo.setEnabled(true);
         guardar.setEnabled(false);

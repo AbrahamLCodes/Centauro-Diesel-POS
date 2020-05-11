@@ -14,12 +14,14 @@ import javax.swing.JInternalFrame;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import java.sql.Connection;
+import jdk.nashorn.internal.ir.Terminal;
 //Usuario, ventas, inventario, proveedores, clientes
 
 public class MainActivity extends javax.swing.JFrame {
 
     private Timer timer;
     private static String fecha;
+    private static String hora;
 
     private Connection con;
     Conexion conexion;
@@ -37,10 +39,16 @@ public class MainActivity extends javax.swing.JFrame {
     public MainActivity() {
         initComponents();
 
+        /*
+        Quita los comentarios cuando tengas que modificar la Base de Datos
+        
+        Operaciones o = new Operaciones();
+        o.modificarBD();
+        
+         */
         conexion = new Conexion();
         conexion.CrearBD();
         con = conexion.AccederBD();
-
 
         setLocationRelativeTo(null);
         setTitle("Centauro Diesel POS");
@@ -49,7 +57,7 @@ public class MainActivity extends javax.swing.JFrame {
 
         Calendar cal = Calendar.getInstance();
 
-         fecha = cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MARCH) + 1) + "/" + cal.get(Calendar.YEAR);
+        fecha = cal.get(Calendar.DATE) + "/" + (cal.get(Calendar.MARCH) + 1) + "/" + cal.get(Calendar.YEAR);
         this.fechal.setText(fecha);
 
         ventasMenu.setBorderPainted(true);
@@ -103,7 +111,7 @@ public class MainActivity extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         segl = new javax.swing.JLabel();
-        ampmTextField = new javax.swing.JLabel();
+        ampm = new javax.swing.JLabel();
         fechaLabel1 = new javax.swing.JLabel();
         fechal = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
@@ -159,9 +167,9 @@ public class MainActivity extends javax.swing.JFrame {
         segl.setForeground(new java.awt.Color(255, 255, 255));
         segl.setText("00");
 
-        ampmTextField.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
-        ampmTextField.setForeground(new java.awt.Color(255, 255, 255));
-        ampmTextField.setText("AM");
+        ampm.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
+        ampm.setForeground(new java.awt.Color(255, 255, 255));
+        ampm.setText("AM");
 
         fechaLabel1.setFont(new java.awt.Font("SansSerif", 1, 24)); // NOI18N
         fechaLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -177,7 +185,7 @@ public class MainActivity extends javax.swing.JFrame {
         desktopPane.setLayer(jLabel4, javax.swing.JLayeredPane.DEFAULT_LAYER);
         desktopPane.setLayer(jLabel7, javax.swing.JLayeredPane.DEFAULT_LAYER);
         desktopPane.setLayer(segl, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        desktopPane.setLayer(ampmTextField, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        desktopPane.setLayer(ampm, javax.swing.JLayeredPane.DEFAULT_LAYER);
         desktopPane.setLayer(fechaLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         desktopPane.setLayer(fechal, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
@@ -203,7 +211,7 @@ public class MainActivity extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(segl)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(ampmTextField)
+                .addComponent(ampm)
                 .addContainerGap())
         );
         desktopPaneLayout.setVerticalGroup(
@@ -211,7 +219,7 @@ public class MainActivity extends javax.swing.JFrame {
             .addGroup(desktopPaneLayout.createSequentialGroup()
                 .addContainerGap(646, Short.MAX_VALUE)
                 .addGroup(desktopPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(ampmTextField)
+                    .addComponent(ampm)
                     .addComponent(segl)
                     .addComponent(jLabel7)
                     .addComponent(minl)
@@ -571,9 +579,9 @@ public class MainActivity extends javax.swing.JFrame {
                 segl.setText(String.valueOf(segundos));
             }
             if (am_pm == 0) {
-                ampmTextField.setText("AM");
+                ampm.setText("AM");
             } else {
-                ampmTextField.setText("PM");
+                ampm.setText("PM");
             }
 
         }
@@ -582,16 +590,21 @@ public class MainActivity extends javax.swing.JFrame {
     public static String getFecha() {
         return fecha;
     }
-    
+
+    public static String getHora() {
+        hora = horal.getText() + ":" + minl.getText() + ":" + segl.getText() + ":" + ampm.getText();
+        return hora;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel ampmTextField;
+    private static javax.swing.JLabel ampm;
     private javax.swing.JMenu clientesMenu;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JLabel fechaLabel1;
     private static javax.swing.JLabel fechal;
     private javax.swing.JLabel horaLabel;
-    private javax.swing.JLabel horal;
+    private static javax.swing.JLabel horal;
     private javax.swing.JMenu informacionMenu;
     private javax.swing.JMenu inventarioMenu;
     private javax.swing.JLabel jLabel4;
@@ -609,10 +622,10 @@ public class MainActivity extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JLabel minl;
+    private static javax.swing.JLabel minl;
     private javax.swing.JMenu probarMenu;
     private javax.swing.JMenu proveedoresMenu;
-    private javax.swing.JLabel segl;
+    private static javax.swing.JLabel segl;
     private javax.swing.JMenu ventasMenu;
     // End of variables declaration//GEN-END:variables
 }

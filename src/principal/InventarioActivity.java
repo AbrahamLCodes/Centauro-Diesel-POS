@@ -14,6 +14,7 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
     public InventarioActivity() {
         initComponents();
         
+        
         fechaText.setText(MainActivity.getFecha());
 
         tabla.getTableHeader().setFont(new Font("Liberation Sans", Font.BOLD, 20));
@@ -23,11 +24,11 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
 
         operaciones = new Operaciones();
 
-        titulos = new String[]{"Código", "Fecha Registro", "Cantidad en Stock", "Nombre", "Proveedor"};
+        titulos = new String[]{"Código", "Fecha Registro", "Cantidad en Stock", "Nombre", "Proveedor","Precio"};
 
         desabilitar();
         operaciones.vaciarTabla(tabla, titulos);
-        operaciones.readDatos(tabla, "INVENTARIO", 5);
+        operaciones.readDatos(tabla, "INVENTARIO", 6);
 
         nuevo.setEnabled(true);
         guardar.setEnabled(false);
@@ -301,7 +302,7 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Código", "Fecha Registro", "Cantidad en Stock", "Nombre", "Proveedor"
+                "Código", "Fecha Registro", "Cantidad en Stock", "Nombre", "Proveedor", "Precio"
             }
         ));
         tabla.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -367,7 +368,6 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         try {
 
             int fila = tabla.getSelectedRow();
-            String cel = tabla.getValueAt(fila, 0).toString();
 
             codigoText.setText(tabla.getValueAt(fila, 0).toString());
             fechaText.setText(tabla.getValueAt(fila, 1).toString());
@@ -395,13 +395,17 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
 
     private void guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarActionPerformed
         if (!isTextsEmpty()) {
-            String[] textos = new String[]{codigoText.getText(), fechaText.getText(),
-                 String.valueOf(cantidadTotal()), nombreText.getText(), proveedorText.getText()};
+            
 
+            String precio = JOptionPane.showInputDialog("Introduce el precio del prducto");
+            
+            String[] textos = new String[]{codigoText.getText(), fechaText.getText(),
+                 String.valueOf(cantidadTotal()), nombreText.getText(), proveedorText.getText(), precio};
+            
             operaciones.createDatos("INVENTARIO", textos);
 
             operaciones.vaciarTabla(tabla, titulos);
-            operaciones.readDatos(tabla, "INVENTARIO", 5);
+            operaciones.readDatos(tabla, "INVENTARIO", 6);
 
             nuevo.setEnabled(true);
             guardar.setEnabled(false);
@@ -430,11 +434,11 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         operaciones.vaciarTabla(tabla, titulos);
         limpiar();
         desabilitar();
-        operaciones.readDatos(tabla, "INVENTARIO", 5);
+        operaciones.readDatos(tabla, "INVENTARIO", 6);
         editar.setEnabled(false);
         guardar.setEnabled(false);
         eliminar.setEnabled(false);
-        nuevo.setEnabled(false);
+        nuevo.setEnabled(true);
        
     }//GEN-LAST:event_editarActionPerformed
 

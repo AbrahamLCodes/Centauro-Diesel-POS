@@ -40,7 +40,8 @@ public class Conexion {
                         + "FECHA VARCHAR (30),"
                         + "HORA VARCHAR (30),"
                         + "CLIENTE VARCHAR(10) REFERENCES CLIENTES(CELULAR),"
-                        + "NPRODUCTOS INT NOT NULL"
+                        + "NPRODUCTOS INT NOT NULL,"
+                        + "COSTO INT NOT NULL DEFAULT 0"
                         + ")";
                 
                 String createTableProveedores = "CREATE TABLE PROVEEDORES("

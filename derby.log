@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Sat May 09 14:33:32 MDT 2020:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0171-fb24-9527-000005fe1290 
+Sun May 10 20:59:46 MDT 2020:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0172-01ac-9056-000005fe2208 
 on database directory /home/abraham/Documents/Miriam/Centauro-Diesel-POS/.\DB\CENTAUROPOS.DB with class loader sun.misc.Launcher$AppClassLoader@7d4991ad 
 Loaded from file:/home/abraham/Documents/Miriam/Centauro-Diesel-POS/src/Librerias/derby.jar
 java.vendor=Private Build

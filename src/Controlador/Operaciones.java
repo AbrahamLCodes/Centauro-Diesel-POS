@@ -49,6 +49,7 @@ public class Operaciones {
                         dts[2] = rs.getString("HORA");
                         dts[3] = rs.getString("CLIENTE");
                         dts[4] = String.valueOf(rs.getInt("NPRODUCTOS"));
+                        dts[5] = String.valueOf(rs.getInt("COSTO"));
                         miModelo.addRow(dts);
                     }
                     break;
@@ -68,6 +69,7 @@ public class Operaciones {
                         dts[2] = String.valueOf(rs.getInt("CANTIDAD"));
                         dts[3] = rs.getString("NOMBRE");
                         dts[4] = rs.getString("PROVEEDOR");
+                        dts[5] = rs.getString("PRECIO");
                         miModelo.addRow(dts);
                     }
                     break;
@@ -100,34 +102,14 @@ public class Operaciones {
 
     }
 
-    private void changeDataBase() {
+    public void modificarBD() {
         try {
             Connection con = null;
             Conexion conect = new Conexion();
             con = conect.getConnection();
             Statement st = con.createStatement();
 
-            String sql = "ALTER TABLE PROVEEDORES DROP APELLIDO";
-
-            PreparedStatement pst = con.prepareStatement(sql);
-            int n = pst.executeUpdate();
-
-            if (n > 0) {
-                System.out.println("YA CHINGASTE MIJO");
-            }
-        } catch (SQLException ex) {
-            System.out.println("NAAAA YA VALIO VRG:  " + ex.getMessage());
-        }
-    }
-
-    public void addNProductos() {
-        try {
-            Connection con = null;
-            Conexion conect = new Conexion();
-            con = conect.getConnection();
-            Statement st = con.createStatement();
-
-            String sql = "ALTER TABLE PROVEEDORES ADD NPRODUCTOS INT NOT NULL DEFAULT 0";
+            String sql = "ALTER TABLE VENTAS ADD COSTO INT NOT NULL DEFAULT 0";
 
             PreparedStatement pst = con.prepareStatement(sql);
             int n = pst.executeUpdate();
@@ -215,15 +197,152 @@ public class Operaciones {
         }
     }
 
-    private void insertIntoVentas() {
+    public void insertIntoVentas(String[] textos, String celular, String[][] productos) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+
+            String sql = "INSERT INTO VENTAS (FOLIO, FECHA, HORA, CLIENTE, NPRODUCTOS, "
+                    + "COSTO) VALUES (?,?,?,?,?,?)";
+
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            pst.setString(1, textos[0]);
+            pst.setString(2, textos[1]);
+            pst.setString(3, textos[2]);
+            pst.setString(4, textos[3]);
+            pst.setInt(5, Integer.parseInt(textos[4]));
+            pst.setInt(6, Integer.parseInt(textos[5]));
+
+            int n = pst.executeUpdate();
+
+            if (n > 0) {
+                for (int i = 0; i < productos.length; i++) {
+                    actualizarInventario(productos[i][0], productos[i][1]);
+                }
+                aumentarACliente(celular);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "NO SE PUDIERON GUARDAR LOS DATOS: "
+                    + ex.getMessage());
+        }
 
     }
 
-    private void updateFromVentas() {
+    public void updateFromVentas(String[] textos, String folio) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+
+            String sql = "UPDATE VENTAS SET FOLIO = ?, FECHA = ?, HORA = ?, CLIENTE = ?"
+                    + ", NPRODUCTOS = ?, COSTO = ? WHERE FOLIO = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            pst.setString(1, textos[0]);
+            pst.setString(2, textos[1]);
+            pst.setString(3, textos[2]);
+            pst.setString(4, textos[3]);
+            pst.setInt(5, Integer.parseInt(textos[4]));
+            pst.setInt(6, Integer.parseInt(textos[5]));
+            pst.setString(7, folio);
+
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "DATOS ACTUALIZADOS CORRECTAMENTE");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR DATOS: " + ex.getMessage());
+        }
+    }
+
+    public void deleteFromVentas(String folio, String celular) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            String sql = "DELETE FROM VENTAS WHERE FOLIO = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, folio);
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                quitarACliente(celular);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "DATOS NO ELIMINADOS CORRECTAMENTE: " + ex.getMessage());
+        }
 
     }
 
-    private void deleteFromVentas() {
+    private void aumentarACliente(String celular) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            Statement st = con.createStatement();
+
+            String sql = "UPDATE CLIENTES SET NCOMPRAS = NCOMPRAS + 1 WHERE CELULAR = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, celular);
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "DATOS ELIMINADOS CORRECTAMENTE\n"
+                        + "SE HA AGREGADO UNA VENTA AL CLIENTE " + celular);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "LOS DATOS NO SE ELIMINARON\n"
+                    + "ES POSIBLE QUE HALLA ESCRITO EL CLIENTE MAL:\n " + ex.getMessage());
+        }
+    }
+
+    private void quitarACliente(String celular) {
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+
+            String sql = "UPDATE CLIENTES SET NCOMPRAS = NCOMPRAS - 1 WHERE CELULAR = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, celular);
+            int n = pst.executeUpdate();
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "DATOS ELIMINADOS CORRECTAMENTE\n"
+                        + "SE HA ELIMINADO UNA VENTA AL CLIENTE " + celular);
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "LOS DATOS NO SE ELIMINARON\n"
+                    + "ES POSIBLE QUE HALLA ESCRITO EL CLIENTE MAL:\n " + ex.getMessage());
+        }
+    }
+
+    private void actualizarInventario(String codigo, String cantidad) {
+
+        try {
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+
+            String sql = "UPDATE INVENTARIO SET CANTIDAD = CANTIDAD - ? WHERE CODIGO = ?";
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            pst.setInt(1, Integer.parseInt(cantidad));
+            pst.setString(2, codigo);
+
+            int n = pst.executeUpdate();
+
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "INVENTARIO ACTUALIZADO CORRECTAMENTE");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ACTUALIZAR EL INVENTARIO: " + ex.getMessage());
+        }
 
     }
 
@@ -308,8 +427,8 @@ public class Operaciones {
             con = conect.getConnection();
             Statement st = con.createStatement();
 
-            String sql = "INSERT INTO INVENTARIO (CODIGO, FECHA, CANTIDAD, NOMBRE, PROVEEDOR) "
-                    + "VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO INVENTARIO (CODIGO, FECHA, CANTIDAD, NOMBRE, PROVEEDOR, PRECIO) "
+                    + "VALUES (?,?,?,?,?,?)";
 
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, textos[0]);
@@ -317,6 +436,7 @@ public class Operaciones {
             pst.setInt(3, Integer.parseInt(textos[2]));
             pst.setString(4, textos[3]);
             pst.setString(5, textos[4]);
+            pst.setInt(6, Integer.parseInt(textos[5]));
 
             int n = pst.executeUpdate();
 
@@ -326,7 +446,7 @@ public class Operaciones {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "NO SE GUARDARON LOS DATOS: " + ex.getMessage());
-            
+
         }
     }
 
@@ -336,19 +456,19 @@ public class Operaciones {
             Conexion conect = new Conexion();
             con = conect.getConnection();
             Statement st = con.createStatement();
-            
+
             String sql = "UPDATE PROVEEDORES SET NPRODUCTOS = NPRODUCTOS + 1 WHERE CELULAR = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, celular);
             int n = pst.executeUpdate();
-            if(n > 0){
+            if (n > 0) {
                 JOptionPane.showMessageDialog(null, "DATOS GUARDADOS CORRECTAMENTE\n"
-                        + "SE HA AGREGADO UN PRODUCTO AL PROVEEDOR "+celular);
+                        + "SE HA AGREGADO UN PRODUCTO AL PROVEEDOR " + celular);
             }
-            
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "LOS DATOS NO SE GUARDARON\n"
-                    + "ES POSIBLE QUE HALLA ESCRITO MAL EL PROVEEDOR:\n"+ex.getMessage());
+                    + "ES POSIBLE QUE HALLA ESCRITO MAL EL PROVEEDOR:\n" + ex.getMessage());
         }
     }
 
@@ -396,30 +516,63 @@ public class Operaciones {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "DATOS NO ELIMINADOS CORRECTAMENTE: " + ex.getMessage());
         }
-        
-        
+
     }
-    
-    private void quitarFromProveedores(String celular){
+
+    private void quitarFromProveedores(String celular) {
         try {
             Connection con = null;
             Conexion conect = new Conexion();
             con = conect.getConnection();
             Statement st = con.createStatement();
-            
+
             String sql = "UPDATE PROVEEDORES SET NPRODUCTOS = NPRODUCTOS - 1 WHERE CELULAR = ?";
             PreparedStatement pst = con.prepareStatement(sql);
             pst.setString(1, celular);
             int n = pst.executeUpdate();
-            if(n > 0){
+            if (n > 0) {
                 JOptionPane.showMessageDialog(null, "DATOS ELIMINADOS CORRECTAMENTE\n"
-                        + "SE HA ELIMINADO UN PRODUCTO AL PROVEEDOR "+celular);
+                        + "SE HA ELIMINADO UN PRODUCTO AL PROVEEDOR " + celular);
             }
-            
+
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "LOS DATOS NO SE ELIMINARON\n"
-                    + "ES POSIBLE QUE HALLA ESCRITO EL PROVEEDOR MAL:\n "+ex.getMessage());
+                    + "ES POSIBLE QUE HALLA ESCRITO EL PROVEEDOR MAL:\n " + ex.getMessage());
         }
+    }
+
+    public String[] getProducto(String codigo, javax.swing.JTable tabla, int cantidad) {
+
+        try {
+            DefaultTableModel miModelo = (DefaultTableModel) tabla.getModel();
+
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+            String sql = "SELECT * FROM INVENTARIO WHERE CODIGO = ?";
+
+            String[] datos = new String[4];
+
+            PreparedStatement pst = con.prepareStatement(sql);
+            pst.setString(1, codigo);
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                datos[0] = rs.getString("NOMBRE");
+                datos[1] = rs.getString("PRECIO");
+                datos[2] = "" + cantidad;
+                datos[3] = codigo;
+            }
+
+            miModelo.addRow(datos);
+
+            return datos;
+
+            // datos[1] = rs.getString("")
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ENCONTRAR EL PRODUCTO " + ex.getMessage());
+        }
+        return null;
     }
 
 }

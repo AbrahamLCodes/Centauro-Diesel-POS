@@ -1,23 +1,29 @@
-
 package principal;
 
+import Controlador.Operaciones;
 import java.awt.Color;
 import java.awt.Font;
 
-
 public class InventarioInternal extends javax.swing.JInternalFrame {
 
-   
+    String[] titulos;
+    Operaciones operaciones;
+
     public InventarioInternal() {
         initComponents();
-        
-        tabla.getTableHeader().setFont(new Font("Liberation Sans" , Font.BOLD, 20));
-        
+
+        operaciones = new Operaciones();
+        tabla.getTableHeader().setFont(new Font("Liberation Sans", Font.BOLD, 20));
+
         tabla.setShowGrid(true);
         tabla.setGridColor(Color.RED);
+
+        titulos = new String[]{"Código", "Fecha Registro", "Cantidad en Stock", "Nombre", "Proveedor", "Precio"};
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "INVENTARIO", 6);
+
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -30,11 +36,11 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        codTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        nombreTextField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        proveedorTextField = new javax.swing.JTextField();
 
         setClosable(true);
 
@@ -53,10 +59,20 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
         jButton1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jButton1.setText("Restaurar");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jButton2.setText("Buscar");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -69,19 +85,34 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Buscar por Código");
 
-        jTextField1.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        codTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        codTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codTextFieldKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Buscar por Nombre");
 
-        jTextField2.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        nombreTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        nombreTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nombreTextFieldKeyPressed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Buscar por Proveedor");
 
-        jTextField3.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        proveedorTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        proveedorTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                proveedorTextFieldKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -91,11 +122,11 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(codTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3))
+                        .addComponent(proveedorTextField))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
@@ -120,9 +151,9 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(codTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nombreTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(proveedorTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -173,8 +204,47 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void codTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codTextFieldKeyPressed
+        nombreTextField.setText("");
+        proveedorTextField.setText("");
+    }//GEN-LAST:event_codTextFieldKeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (!nombreTextField.getText().isEmpty()) {
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "INVENTARIO", 6, "NOMBRE", nombreTextField.getText());
+        } else if (!codTextField.getText().isEmpty()) {
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "INVENTARIO", 6, "CODIGO", codTextField.getText());
+        } else if (!proveedorTextField.getText().isEmpty()) {
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "INVENTARIO", 6, "PROVEEDOR", proveedorTextField.getText());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void nombreTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreTextFieldKeyPressed
+        codTextField.setText("");
+        proveedorTextField.setText("");
+    }//GEN-LAST:event_nombreTextFieldKeyPressed
+
+    private void proveedorTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_proveedorTextFieldKeyPressed
+        codTextField.setText("");
+        nombreTextField.setText("");
+
+    }//GEN-LAST:event_proveedorTextFieldKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "INVENTARIO", 6);
+        
+        nombreTextField.setText("");
+        codTextField.setText("");
+        proveedorTextField.setText("");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField codTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -183,10 +253,9 @@ public class InventarioInternal extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField nombreTextField;
     private javax.swing.JPanel panel;
+    private javax.swing.JTextField proveedorTextField;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

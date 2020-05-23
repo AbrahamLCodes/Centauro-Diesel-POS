@@ -61,7 +61,6 @@ public class MainActivity extends javax.swing.JFrame {
         this.fechal.setText(fecha);
 
         ventasMenu.setBorderPainted(true);
-        probarMenu.setBorderPainted(true);
         inventarioMenu.setBorderPainted(true);
         clientesMenu.setBorderPainted(true);
         proveedoresMenu.setBorderPainted(true);
@@ -115,7 +114,6 @@ public class MainActivity extends javax.swing.JFrame {
         fechaLabel1 = new javax.swing.JLabel();
         fechal = new javax.swing.JLabel();
         menuBar = new javax.swing.JMenuBar();
-        probarMenu = new javax.swing.JMenu();
         ventasMenu = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -130,7 +128,6 @@ public class MainActivity extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         informacionMenu = new javax.swing.JMenu();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -233,11 +230,6 @@ public class MainActivity extends javax.swing.JFrame {
 
         menuBar.setBackground(new java.awt.Color(255, 102, 0));
 
-        probarMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        probarMenu.setText("Probar Conexion");
-        probarMenu.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
-        menuBar.add(probarMenu);
-
         ventasMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         ventasMenu.setText("Ventas");
         ventasMenu.setFont(new java.awt.Font("Liberation Sans", 1, 24)); // NOI18N
@@ -337,9 +329,6 @@ public class MainActivity extends javax.swing.JFrame {
             }
         });
         informacionMenu.add(jMenuItem11);
-
-        jMenu7.setText("Acerca de los desarrolladores");
-        informacionMenu.add(jMenu7);
 
         menuBar.add(informacionMenu);
 
@@ -609,7 +598,6 @@ public class MainActivity extends javax.swing.JFrame {
     private javax.swing.JMenu inventarioMenu;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
@@ -623,7 +611,6 @@ public class MainActivity extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenuBar menuBar;
     private static javax.swing.JLabel minl;
-    private javax.swing.JMenu probarMenu;
     private javax.swing.JMenu proveedoresMenu;
     private static javax.swing.JLabel segl;
     private javax.swing.JMenu ventasMenu;

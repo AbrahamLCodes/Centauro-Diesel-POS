@@ -1,22 +1,29 @@
-
 package principal;
 
+import Controlador.Operaciones;
 import java.awt.Color;
 import java.awt.Font;
 
-
 public class ClientesInternal extends javax.swing.JInternalFrame {
+
+    Operaciones operaciones;
+    String[] titulos;
 
     public ClientesInternal() {
         initComponents();
-        
-        tabla.getTableHeader().setFont(new Font("Liberation Sans" , Font.BOLD, 20));
-        
+
+        tabla.getTableHeader().setFont(new Font("Liberation Sans", Font.BOLD, 20));
+
         tabla.setShowGrid(true);
         tabla.setGridColor(Color.RED);
+
+        operaciones = new Operaciones();
+        titulos = new String[]{"Celular", "Nombre", "Apellido", "Correo", "Num. Compras"};
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "CLIENTES", 5);
+
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -29,9 +36,9 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        telTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        correoTextField = new javax.swing.JTextField();
 
         setClosable(true);
 
@@ -50,10 +57,20 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
         jButton1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jButton1.setText("Restaurar");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jButton2.setText("Buscar");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -66,13 +83,23 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Buscar por Celular");
 
-        jTextField2.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        telTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        telTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                telTextFieldKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Buscar por Correo");
 
-        jTextField1.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        correoTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        correoTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                correoTextFieldKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -85,11 +112,11 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2))
+                            .addComponent(telTextField))
                         .addGap(69, 69, 69)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1))))
+                            .addComponent(correoTextField))))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -103,8 +130,8 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(telTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -154,8 +181,37 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void telTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_telTextFieldKeyPressed
+
+        correoTextField.setText("");
+    }//GEN-LAST:event_telTextFieldKeyPressed
+
+    private void correoTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_correoTextFieldKeyPressed
+        telTextField.setText("");
+    }//GEN-LAST:event_correoTextFieldKeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (!telTextField.getText().isEmpty()) {
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "CLIENTES", 5, "CELULAR", telTextField.getText());
+        } else if (!correoTextField.getText().isEmpty()) {
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "CLIENTES", 5, "CORREO", correoTextField.getText());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "CLIENTES", 5);
+        
+        telTextField.setText("");
+        correoTextField.setText("");
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField correoTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -163,9 +219,8 @@ public class ClientesInternal extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel panel;
     private javax.swing.JTable tabla;
+    private javax.swing.JTextField telTextField;
     // End of variables declaration//GEN-END:variables
 }

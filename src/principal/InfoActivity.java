@@ -27,15 +27,43 @@ public class InfoActivity extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+
+        setClosable(true);
+
+        jPanel1.setBackground(new java.awt.Color(51, 51, 51));
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("Ubuntu", 0, 18)); // NOI18N
+        jTextArea1.setRows(5);
+        jTextArea1.setText("Centauro Diesel Point of Sale\n\nEste Software fue diseñado para las materias de \"Desarrollo e Implementación de Sistemas de Información\" y \"Taller de Bases de Datos\", \nde la Carrera \"Ingeniería Informática\" por parte del Insituto Tecnológico de Chihuahua II.\n\nEste Software está hecho con puro Software Libre. El IDE, El JDK de Java (El Open JDK), El Gestor de Bases de Datos (Apache Derby)\ne incluso el mismo Sistema Operativo (GNU/Linux), todo es Software Libre. En este equipo de desarrollo creemos en el Software Libre.\nEl proyecto tiene un repositorio público en GitHub que tiene las 4 libertades del Software Libre.\n\nLink para clonar el Repositorio de GitHub:\nhttps://github.com/AbrahamLCodes/Centauro-Diesel-POS.git\n\nInformación sobre los Desarrolladores:\n\nAbraham Luna Cázares: Programador Líder, Arquitecto de Software, Arquitecto y Desarrollador de la Base de Datos.\nMario Andrés Tejada Morales: Programador de interfaces, Diseñador de Interfaces.\nFelix Francisco Soto Castillo: Desarrollador de la Base de Datos.\nFernando Noche González: Modelador de datos y diseñador de casos de uso.\n\nAl momento de presentarse el proyeceto (6 de Junio del 2020) los Desarrolladores son alumnos de 6to semestre de la carrera\nIngeniería Informática del Instituto Tecnológico de Chihuahua II.\n");
+        jScrollPane1.setViewportView(jTextArea1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1165, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1189, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 689, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -43,5 +71,8 @@ public class InfoActivity extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }

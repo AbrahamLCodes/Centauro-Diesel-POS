@@ -84,6 +84,84 @@ public class Operaciones {
 
     }
 
+    public void busqueda(javax.swing.JTable tabla, String nombreTabla, int nDatos, String campo, String where) {
+
+        try {
+
+            Connection con = null;
+            Conexion conect = new Conexion();
+            con = conect.getConnection();
+
+            String dts[] = new String[nDatos];
+            DefaultTableModel miModelo = (DefaultTableModel) tabla.getModel();
+
+            String sql = "SELECT * FROM " + nombreTabla + " WHERE " + campo + " = ?";
+
+            PreparedStatement pst = con.prepareStatement(sql);
+
+            if (nombreTabla.equals("VENTAS") && campo.equals("FOLIO")) {
+                pst.setInt(1, Integer.parseInt(where));
+            } else {
+                pst.setString(1, where);
+
+            }
+
+            ResultSet rs = pst.executeQuery();
+
+            switch (nombreTabla) {
+                case "CLIENTES":
+                    while (rs.next()) {
+                        dts[0] = rs.getString("CELULAR");
+                        dts[1] = rs.getString("NOMBRE");
+                        dts[2] = rs.getString("APELLIDO");
+                        dts[3] = rs.getString("CORREO");
+                        dts[4] = String.valueOf(rs.getInt("NCOMPRAS"));
+                        miModelo.addRow(dts);
+                    }
+                    break;
+                case "VENTAS":
+                    while (rs.next()) {
+                        dts[0] = String.valueOf(rs.getInt("FOLIO"));
+                        dts[1] = rs.getString("FECHA");
+                        dts[2] = rs.getString("HORA");
+                        dts[3] = rs.getString("CLIENTE");
+                        dts[4] = String.valueOf(rs.getInt("NPRODUCTOS"));
+                        dts[5] = String.valueOf(rs.getInt("COSTO"));
+                        miModelo.addRow(dts);
+                    }
+                    break;
+                case "PROVEEDORES":
+                    while (rs.next()) {
+                        dts[0] = rs.getString("CELULAR");
+                        dts[1] = rs.getString("CORREO");
+                        dts[2] = rs.getString("NOMBRE");
+                        dts[3] = String.valueOf(rs.getInt("NPRODUCTOS"));
+                        miModelo.addRow(dts);
+                    }
+                    break;
+                case "INVENTARIO":
+                    while (rs.next()) {
+                        dts[0] = rs.getString("CODIGO");
+                        dts[1] = rs.getString("FECHA");
+                        dts[2] = String.valueOf(rs.getInt("CANTIDAD"));
+                        dts[3] = rs.getString("NOMBRE");
+                        dts[4] = rs.getString("PROVEEDOR");
+                        dts[5] = rs.getString("PRECIO");
+                        miModelo.addRow(dts);
+                    }
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "Tabla no encontrada");
+                    break;
+
+            }
+            tabla.setModel(miModelo);
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, " NO SE PUEDEN VISUALIZAR LOS DATOS:     " + ex.getMessage());
+        }
+
+    }
+
     public void createDatos(String tablaNombre, String[] textos) {
 
         switch (tablaNombre) {

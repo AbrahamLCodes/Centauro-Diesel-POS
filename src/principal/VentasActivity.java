@@ -8,8 +8,9 @@ import javax.swing.table.JTableHeader;
 
 public class VentasActivity extends javax.swing.JInternalFrame {
 
-    Operaciones operaciones;
-    String[] titulos;
+    private Operaciones operaciones;
+    private String[] titulos;
+    private int nP;
 
     public VentasActivity() {
         initComponents();
@@ -35,6 +36,8 @@ public class VentasActivity extends javax.swing.JInternalFrame {
         guardar.setEnabled(false);
         editar.setEnabled(false);
         eliminar.setEnabled(false);
+
+        nP = 0;
 
     }
 
@@ -370,6 +373,7 @@ public class VentasActivity extends javax.swing.JInternalFrame {
             eliminar.setEnabled(false);
             limpiar();
             desabilitar();
+            operaciones.vaciarTabla(tabla, titulos);
             operaciones.readDatos(tabla, "VENTAS", 6);
         }
 
@@ -410,6 +414,8 @@ public class VentasActivity extends javax.swing.JInternalFrame {
 
     private void eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarActionPerformed
         operaciones.deleteFromVentas(folioText.getText(), clienteText.getText());
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "VENTAS", 6);
     }//GEN-LAST:event_eliminarActionPerformed
 
     private void productosTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_productosTextKeyPressed
@@ -420,6 +426,7 @@ public class VentasActivity extends javax.swing.JInternalFrame {
 
             operaciones.getProducto(productosText.getText(), tablaProductos, cantidad);
             productosText.setText("");
+            nP++;
 
             int precio = Integer.parseInt(String.valueOf(tablaProductos
                     .getValueAt(tablaProductos.getModel()
@@ -430,7 +437,7 @@ public class VentasActivity extends javax.swing.JInternalFrame {
 
             int productosTotal = Integer.parseInt(productosLabel.getText());
 
-            productosLabel.setText(String.valueOf(productosTotal++));
+            productosLabel.setText(String.valueOf(productosTotal + 1));
         }
 
     }//GEN-LAST:event_productosTextKeyPressed

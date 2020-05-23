@@ -1,22 +1,28 @@
-
 package principal;
 
+import Controlador.Operaciones;
 import java.awt.Color;
 import java.awt.Font;
 
-
 public class ProveedoresInternal extends javax.swing.JInternalFrame {
+
+    Operaciones operaciones;
+    String[] titulos;
 
     public ProveedoresInternal() {
         initComponents();
-        
-        tabla.getTableHeader().setFont(new Font("Liberation Sans" , Font.BOLD, 20));
-        
+
+        tabla.getTableHeader().setFont(new Font("Liberation Sans", Font.BOLD, 20));
+
         tabla.setShowGrid(true);
         tabla.setGridColor(Color.RED);
+
+        operaciones = new Operaciones();
+        titulos = new String[]{"Celular", "Correo", "Nombre", "Productos en Inventario"};
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "PROVEEDORES", 4);
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -29,8 +35,8 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        celularTextField = new javax.swing.JTextField();
+        correoTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
 
         setClosable(true);
@@ -50,10 +56,20 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
         jButton1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jButton1.setText("Restaurar");
         jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jButton2.setText("Buscar");
         jButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -66,9 +82,19 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Buscar por Celular");
 
-        jTextField1.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        celularTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        celularTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                celularTextFieldKeyPressed(evt);
+            }
+        });
 
-        jTextField2.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        correoTextField.setFont(new java.awt.Font("Liberation Sans", 1, 14)); // NOI18N
+        correoTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                correoTextFieldKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -84,12 +110,12 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(celularTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -106,8 +132,8 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
                         .addComponent(jLabel3)
                         .addGap(16, 16, 16)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(celularTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(correoTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
@@ -158,8 +184,36 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void celularTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_celularTextFieldKeyPressed
+        correoTextField.setText("");
+    }//GEN-LAST:event_celularTextFieldKeyPressed
+
+    private void correoTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_correoTextFieldKeyPressed
+        celularTextField.setText("");
+    }//GEN-LAST:event_correoTextFieldKeyPressed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if(!correoTextField.getText().isEmpty()){
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "PROVEEDORES", 4, "CORREO", correoTextField.getText());
+        }else if(!celularTextField.getText().isEmpty()){
+            operaciones.vaciarTabla(tabla, titulos);
+            operaciones.busqueda(tabla, "PROVEEDORES", 4, "CELULAR", celularTextField.getText());
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        operaciones.vaciarTabla(tabla, titulos);
+        operaciones.readDatos(tabla, "PROVEEDORES", 4);
+        correoTextField.setText("");
+        celularTextField.setText("");
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField celularTextField;
+    private javax.swing.JTextField correoTextField;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -167,8 +221,6 @@ public class ProveedoresInternal extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel panel;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables

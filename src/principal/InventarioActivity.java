@@ -356,8 +356,7 @@ public class InventarioActivity extends javax.swing.JInternalFrame {
         guardar.setEnabled(true);
         editar.setEnabled(false);
         eliminar.setEnabled(false);
-        operaciones.vaciarTabla(tabla, titulos);
-        operaciones.readDatos(tabla, "INVENTARIO", 5);
+        
         anadirText.setText("0");
         quitarText.setText("0");
         quitarText.setEnabled(false);

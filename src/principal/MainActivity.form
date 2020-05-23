@@ -19,19 +19,6 @@
         </Property>
       </Properties>
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="probarMenu">
-          <Properties>
-            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-              <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                <LineBorder thickness="3"/>
-              </Border>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Probar Conexion"/>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Liberation Sans" size="24" style="1"/>
-            </Property>
-          </Properties>
-        </Menu>
         <Menu class="javax.swing.JMenu" name="ventasMenu">
           <Properties>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -177,11 +164,6 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem11ActionPerformed"/>
               </Events>
             </MenuItem>
-            <Menu class="javax.swing.JMenu" name="jMenu7">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Acerca de los desarrolladores"/>
-              </Properties>
-            </Menu>
           </SubComponents>
         </Menu>
       </SubComponents>
